@@ -4,40 +4,36 @@ import { createStore } from 'redux';
 ✅ CreateStore는 reducer를 요구함.
 ✅ Reducer는 data를 modify 해주는 함수로 reducer가 return하는 것은 application에 있는 data가 됨.
 */
+const form = document.querySelector('form');
+const input = document.querySelector('input');
+const ul = document.querySelector('ul');
 
-const add = document.querySelector('#add');
-const minus = document.querySelector('#minus');
-const number = document.querySelector('span');
+const ADD_TODO = 'ADD_TODO';
+const DELETE_TODO = 'DELETE_TODO';
 
-const ADD = 'ADD';
-const MINUS = 'MINUS';
-
-const countModifier = (count = 0, action) => {
+const reducer = (state = [], action) => {
   switch (action.type) {
-    case ADD:
-      return count + 1;
-    case MINUS:
-      return count - 1;
+    case ADD_TODO:
+      return;
+    case DELETE_TODO:
+      return;
     default:
-      return 0;
+      return state;
   }
 };
 
-const countStore = createStore(countModifier);
+const store = createStore(reducer);
 
-const onChange = () => {
-  number.innerText = countStore.getState();
+// const createToDo = (toDo) => {
+//   ul.insertAdjacentHTML('beforeend', `<li>${toDo}</li>`);
+// };
+
+const onSubmit = (e) => {
+  e.preventDefault();
+  const toDo = input.value;
+  input.value = '';
+  //createToDo(toDo);
+  store.dispatch({ type: ADD_TODO, text: toDo });
 };
 
-countStore.subscribe(onChange);
-
-const handleAdd = () => {
-  countStore.dispatch({ type: ADD });
-};
-
-const handleMinus = () => {
-  countStore.dispatch({ type: MINUS });
-};
-
-add.addEventListener('click', handleAdd);
-minus.addEventListener('click', handleMinus);
+form.addEventListener('submit', onSubmit);

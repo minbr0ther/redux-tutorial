@@ -14,7 +14,7 @@ const DELETE_TODO = 'DELETE_TODO';
 const reducer = (state = [], action) => {
   switch (action.type) {
     case ADD_TODO:
-      return;
+      return [...state, { id: Date.now(), text: action.text }]; // Don't mutate 🚨
     case DELETE_TODO:
       return;
     default:
@@ -23,6 +23,8 @@ const reducer = (state = [], action) => {
 };
 
 const store = createStore(reducer);
+
+store.subscribe(() => console.log(store.getState()));
 
 // const createToDo = (toDo) => {
 //   ul.insertAdjacentHTML('beforeend', `<li>${toDo}</li>`);

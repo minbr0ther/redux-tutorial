@@ -15,20 +15,23 @@ const reducer = (state = [], action) => {
   switch (action.type) {
     case ADD_TODO:
       return [{ id: Date.now(), text: action.text }, ...state]; // Don't mutate 🚨
+
     case DELETE_TODO:
-      return [...state].filter((obj) => obj.id !== action.id);
+      return state.filter((obj) => obj.id !== action.id); // Don't mutate 🚨
+
     default:
       return state;
   }
 };
 
 const addToDo = (text) => ({ type: ADD_TODO, text });
-const deleteToDo = (e) => ({ type: DELETE_TODO, id: e.target.id });
+const deleteToDo = (id) => ({ type: DELETE_TODO, id });
 
 const store = createStore(reducer);
 
 const dispatchAddToDo = (text) => store.dispatch(addToDo(text));
-const dispatchDeleteToDo = (e) => store.dispatch(deleteToDo(e));
+const dispatchDeleteToDo = (e) =>
+  store.dispatch(deleteToDo(parseInt(e.target.id)));
 
 const paintToDos = () => {
   ul.innerHTML = '';

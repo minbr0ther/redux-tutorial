@@ -14,28 +14,47 @@ const DELETE_TODO = 'DELETE_TODO';
 const reducer = (state = [], action) => {
   switch (action.type) {
     case ADD_TODO:
-      return [...state, { id: Date.now(), text: action.text }]; // Don't mutate 🚨
+      return [{ id: Date.now(), text: action.text }, ...state]; // Don't mutate 🚨
     case DELETE_TODO:
-      return;
+      return [...state].filter((obj) => obj.id !== action.id);
     default:
       return state;
   }
 };
 
+const addToDo = (text) => ({ type: ADD_TODO, text });
+const deleteToDo = (e) => ({ type: DELETE_TODO, id: e.target.id });
+
 const store = createStore(reducer);
 
-store.subscribe(() => console.log(store.getState()));
+const dispatchAddToDo = (text) => store.dispatch(addToDo(text));
+const dispatchDeleteToDo = (e) => store.dispatch(deleteToDo(e));
 
-// const createToDo = (toDo) => {
-//   ul.insertAdjacentHTML('beforeend', `<li>${toDo}</li>`);
-// };
+const paintToDos = () => {
+  ul.innerHTML = '';
+
+  store.getState().forEach((toDo) => {
+    ul.insertAdjacentHTML(
+      'beforeend',
+      `
+      <li>${toDo.text}
+        <button class="delete" id=${toDo.id}>DEL</button>
+      </li>
+    `
+    );
+    document
+      .querySelector('.delete')
+      .addEventListener('click', dispatchDeleteToDo);
+  });
+};
+
+store.subscribe(paintToDos);
 
 const onSubmit = (e) => {
   e.preventDefault();
   const toDo = input.value;
   input.value = '';
-  //createToDo(toDo);
-  store.dispatch({ type: ADD_TODO, text: toDo });
+  dispatchAddToDo(toDo);
 };
 
 form.addEventListener('submit', onSubmit);

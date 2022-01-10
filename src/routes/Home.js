@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { actionCreators } from '../store';
 
-function Home({ toDos }) {
+function Home({ toDos, addToDo, deleteToDo }) {
   const [text, setText] = useState('');
 
   function onChange(e) {
@@ -10,6 +11,7 @@ function Home({ toDos }) {
 
   function onSubmit(e) {
     e.preventDefault();
+    addToDo(text);
     setText('');
   }
 
@@ -20,7 +22,7 @@ function Home({ toDos }) {
         <input type="text" value={text} onChange={onChange} />
         <button>Add</button>
       </form>
-      <ul></ul>
+      <ul>{JSON.stringify(toDos)}</ul>
     </>
   );
 }
@@ -31,5 +33,13 @@ function mapStateToProps(state) {
   return { toDos: state };
 }
 
+// connect의 두번째 인자로 mapDispatchToProps를 사용할 수 있다
+function mapDispatchToProps(dispatch) {
+  return {
+    addToDo: (text) => dispatch(actionCreators.addToDo(text)),
+    deleteToDo: (text) => dispatch(actionCreators.deleteToDo(text)),
+  };
+}
+
 // Home 컴포넌트에 store를 연결한다
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

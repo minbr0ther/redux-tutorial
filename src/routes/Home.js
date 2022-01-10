@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
-function Home() {
+function Home({ toDos }) {
   const [text, setText] = useState('');
 
   function onChange(e) {
@@ -24,4 +25,11 @@ function Home() {
   );
 }
 
-export default Home;
+// store로부터 state를 꺼내온다
+// a.k.a mapStateToProps()
+function mapStateToProps(state) {
+  return { toDos: state };
+}
+
+// Home 컴포넌트에 store를 연결한다
+export default connect(mapStateToProps)(Home);

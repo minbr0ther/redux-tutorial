@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Todo from '../components/Todo';
-import { actionCreators } from '../store';
+import { add } from '../store';
 
 function Home({ toDos, addToDo }) {
   const [text, setText] = useState('');
@@ -24,7 +24,7 @@ function Home({ toDos, addToDo }) {
         <button>Add</button>
       </form>
       <ul>
-        {toDos.map((toDo) => (
+        {toDos?.map((toDo) => (
           <Todo {...toDo} key={toDo.id} />
         ))}
       </ul>
@@ -41,7 +41,7 @@ function mapStateToProps(state) {
 // connect의 두번째 인자로 mapDispatchToProps를 사용할 수 있다
 function mapDispatchToProps(dispatch) {
   return {
-    addToDo: (text) => dispatch(actionCreators.addToDo(text)),
+    addToDo: (text) => dispatch(add(text)),
   };
 }
 

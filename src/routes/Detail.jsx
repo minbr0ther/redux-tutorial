@@ -9,7 +9,7 @@ function Detail({ toDos }) {
 
   return (
     <>
-      <h1>{toDo?.text || 'Detail'}</h1>
+      <h1>{toDo?.text || 'No props detected 🚨'}</h1>
       <h5>Created at: {toDo?.id}</h5>
     </>
   );
